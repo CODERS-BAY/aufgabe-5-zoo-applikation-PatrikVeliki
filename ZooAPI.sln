@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZooAPI", "ZooAPI.csproj", "{5C6DD347-9793-4BB3-BC1E-762745BBD157}"
 EndProject
 Global
