@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {getAllTiere, getTierByGattung} from '../../api/api'; // Pfad zu api.js anpassen
 
+function Tiere() {
     const [tiere, setTiere] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
