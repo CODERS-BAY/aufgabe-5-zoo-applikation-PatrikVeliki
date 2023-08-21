@@ -5,10 +5,10 @@ namespace ZooAPI.Service
 {
     public class ZoobesucherService
     {
-        private readonly DBConnection _dbConnection;
+        private readonly DbConnection _dbConnection;
 
         // Konstruktor: DB Verbindung Injektion
-        public ZoobesucherService(DBConnection dbConnection)
+        public ZoobesucherService(DbConnection dbConnection)
         {
             _dbConnection = dbConnection;
         }

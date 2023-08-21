@@ -1,19 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
-using MySqlConnector;
-using System.IO;
-using System.Threading.Tasks;
-using ZooAPI.Model;
+﻿using MySqlConnector;
 
 namespace ZooAPI.Controller
 {
     // Datenbankverbindungsklasse
-    public class DBConnection
+    public class DbConnection
     {
         private readonly IConfiguration _configuration; // Konfigurationsobjekt
         private readonly string? _connectionString; // Verbindungszeichenfolge zur Datenbank
 
         // Konstruktor mit Konfiguration
-        public DBConnection(IConfiguration configuration)
+        public DbConnection(IConfiguration configuration)
         {
             _configuration = configuration;
             _connectionString =
@@ -21,7 +17,7 @@ namespace ZooAPI.Controller
         }
 
         // Überladener Konstruktor mit Verbindungszeichenfolge und Konfiguration
-        public DBConnection(string? connectionString, IConfiguration configuration)
+        public DbConnection(string? connectionString, IConfiguration configuration)
         {
             _connectionString = connectionString;
             _configuration = configuration;

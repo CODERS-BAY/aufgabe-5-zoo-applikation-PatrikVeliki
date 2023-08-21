@@ -7,11 +7,11 @@ namespace ZooAPI.Service
     // Service für Kassierer-Funktionen
     public class KassiererService
     {
-        private readonly DBConnection _dbConnection; // Datenbankverbindung
+        private readonly DbConnection _dbConnection; // Datenbankverbindung
         private readonly IOptions<TicketPrices> _ticketPrices; // Ticketpreise
 
         // Konstruktor: DB & Ticketpreise Injektion
-        public KassiererService(DBConnection dbConnection, IOptions<TicketPrices> ticketPrices)
+        public KassiererService(DbConnection dbConnection, IOptions<TicketPrices> ticketPrices)
         {
             _dbConnection = dbConnection;
             _ticketPrices = ticketPrices;

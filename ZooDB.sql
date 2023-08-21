@@ -82,7 +82,8 @@ CREATE TABLE tickets
 ALTER TABLE Zoo.tickets
     ADD type VARCHAR(255);
 
-ALTER TABLE tickets MODIFY type ENUM('Kinder', 'Erwachsener', 'Senioren');
+ALTER TABLE tickets
+    MODIFY type ENUM ('Kinder', 'Erwachsener', 'Senioren');
 UPDATE Zoo.tickets
 SET type = 'Kinder'
 WHERE preis = 20;
@@ -96,7 +97,7 @@ WHERE preis = 22;
 ALTER TABLE Zoo.tickets
     ADD CONSTRAINT CHK_TicketType CHECK (type IN ('Kinder', 'Erwachsener', 'Senioren'));
 
-CREATE INDEX idx_verkaufsdatum ON Zoo.tickets (verkaufsdatum);
+CREATE INDEX idx_verkaufsdatum ON Zoo.tickets (zeitpunkt);
 
 -- User Operations
 DROP USER IF EXISTS 'zoo_user'@'Zoo';
@@ -143,9 +144,27 @@ VALUES ('Löwe', 'Fleisch', 1),
        ('Pinguin', 'Fisch', 2),
        ('Giraffe', 'Blätter', 1);
 
--- Add Tickets
-INSERT INTO tickets(preis, type) VALUES (20, 'Kinder');
-INSERT INTO tickets(preis, type) VALUES (25, 'Erwachsener');
-INSERT INTO tickets(preis, type) VALUES (22, 'Senioren');
-INSERT INTO Zoo.tickets (type, preis, verkaufsdatum) VALUES (@type, @preis, @verkaufsdatum);
-SELECT CONCAT(preis, ' €') AS formatted_price FROM Zoo.tickets;
+-- Add Tickets [HY000][1093] (conn=30) Table 'tickets' is specified twice, both as a target for 'INSERT' and as a separate source for data
+
+INSERT INTO tickets(preis, type)
+VALUES (20, 'Kinder');
+
+INSERT INTO tickets(preis, type)
+VALUES (25, 'Erwachsener');
+
+INSERT INTO tickets(preis, type)
+VALUES (22, 'Senioren');
+
+INSERT INTO Zoo.tickets (preis, verkaufsdatum, type)
+VALUES ((SELECT preis FROM Zoo.tickets WHERE type = 'Kinder'),
+        '2019-01-01', 'Kinder');
+
+INSERT INTO Zoo.tickets (preis, verkaufsdatum, type)
+VALUES ((SELECT preis FROM Zoo.tickets WHERE type = 'Erwachsener'),
+        '2019-01-01', 'Erwachsener');
+
+INSERT INTO Zoo.tickets (preis, verkaufsdatum, type)
+VALUES ((SELECT preis FROM Zoo.tickets WHERE type = 'Senioren'),
+        '2019-01-01', 'Senioren');
+SELECT CONCAT(preis, ' €') AS formatted_price
+FROM Zoo.tickets;

@@ -12,7 +12,7 @@
             GehegeId = gehegeId; // ID des Geheges, in dem das Tier sich befindet
         }
 
-        public int Id { get; set; } // Tier-ID
+        public int Id;  // Tier-ID
         public string Gattung { get; set; } // Tiergattung
         public string Nahrung { get; set; } // Nahrung des Tiers
         public int GehegeId { get; set; } // Gehege-ID
