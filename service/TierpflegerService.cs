@@ -21,7 +21,7 @@ namespace ZooAPI.Service
             await using var command = conn.CreateCommand();
             // SQL-Abfrage: Tiere basierend auf der Pfleger-ID
             command.CommandText =
-                "SELECT t.* FROM tiere t JOIN gehege g ON t.gehege_id = g.Id JOIN mitarbeiter m ON g.mitarbeiter_id = m.id WHERE m.id = @pflegerId";
+                "SELECT t.* FROM Zoo.tiere t JOIN Zoo.gehege g ON t.gehege_id = g.Id JOIN Zoo.mitarbeiter m ON g.mitarbeiter_id = m.id WHERE m.id = @pflegerId";
             command.Parameters.AddWithValue("@pflegerId", pflegerId);
             await using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
@@ -31,6 +31,7 @@ namespace ZooAPI.Service
                     reader.GetString("gattung"),
                     reader.GetString("nahrung"),
                     reader.GetInt32("gehege_id")
+                    
                 );
                 result.Add(tier);
             }
@@ -45,7 +46,7 @@ namespace ZooAPI.Service
             await using var command = conn.CreateCommand();
             // SQL-Update-Befehl für das Tier
             command.CommandText =
-                "UPDATE tiere SET gattung = @gattung, nahrung = @nahrung, gehege_id = @gehegeId WHERE id = @id";
+                "UPDATE Zoo.tiere SET gattung = @gattung, nahrung = @nahrung, gehege_id = @gehegeId WHERE id = @id";
             command.Parameters.AddWithValue("@id", id);
             command.Parameters.AddWithValue("@gattung", updatedTier.Gattung);
             command.Parameters.AddWithValue("@nahrung", updatedTier.Nahrung);

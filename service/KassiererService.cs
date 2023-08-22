@@ -81,14 +81,14 @@ namespace ZooAPI.Service
             await command.ExecuteNonQueryAsync();
         }
 
-        // Tickets nach Datum abrufen
+        // Tickets nach Datum abrufen und Gesamtpreis berechnen
         public async Task<(List<Ticket> Tickets, decimal Total)> GetTicketsByDate(DateTime date)
         {
             var tickets = new List<Ticket>();
             decimal total = 0;
             await using var conn = await _dbConnection.GetConnectionAsync();
             await using var command = conn.CreateCommand();
-            // SQL-Abfrage: Tickets nach Datum
+            // SQL-Abfrage: Tickets nach Datum 
             command.CommandText = "SELECT * FROM Zoo.tickets WHERE verkaufsdatum = @date";
             command.Parameters.AddWithValue("@date", date);
             await using var reader = await command.ExecuteReaderAsync();
@@ -104,7 +104,7 @@ namespace ZooAPI.Service
                 total += ticket.Preis;
             }
 
-            return (tickets, total);
+            return (tickets, Total: total);
         }
     }
 }

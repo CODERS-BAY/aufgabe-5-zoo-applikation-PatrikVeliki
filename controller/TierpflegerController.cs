@@ -9,7 +9,7 @@ namespace ZooAPI.Controller
     public class TierpflegerController : ControllerBase
     {
         private readonly TierpflegerService _service;
-
+        
         // Konstruktor: Service-Injektion
         public TierpflegerController(TierpflegerService service)
         {
@@ -20,15 +20,29 @@ namespace ZooAPI.Controller
         [HttpGet("{pflegerId}/tiere")]
         public async Task<ActionResult<List<Tier>>> GetTiereByPflegerIdAsync(int pflegerId)
         {
-            return await _service.GetTiereByPflegerIdAsync(pflegerId);
+            try
+            {
+                return await _service.GetTiereByPflegerIdAsync(pflegerId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // Endpoint: Tier aktualisieren
         [HttpPut("tiere/{id}/{column}")]
         public async Task<IActionResult> UpdateTier(int id, Tier column)
         {
-            await _service.UpdateTierAsync(id, column);
-            return Ok();
+            try
+            {
+                await _service.UpdateTierAsync(id, column);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

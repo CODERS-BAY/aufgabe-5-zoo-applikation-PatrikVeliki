@@ -20,23 +20,44 @@ namespace ZooAPI.Controller
         [HttpPost("buy")]
         public async Task<ActionResult<Ticket>> InsertTicket(Ticket ticket)
         {
-            await _service.InsertTicketAsync(ticket);
-            return Ok(ticket);
+            try
+            {
+                await _service.InsertTicketAsync(ticket);
+                return CreatedAtAction(nameof(InsertTicket), new { id = ticket.Id }, ticket);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // Alle Tickets: api/kassierer/gettickets
-        [HttpGet("gettickets")]
+        [HttpGet("tickets")]
         public async Task<ActionResult<List<Ticket>>> GetAllTickets()
         {
-            return await _service.GetAllSoldTicketsAsync();
+            try
+            {
+                return await _service.GetAllSoldTicketsAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // Tickets nach Datum: api/kassierer/tickets/date/{date}
         [HttpGet("tickets/date/{date}")]
         public async Task<ActionResult<List<Ticket>>> GetTicketsByDate(DateTime date)
         {
-            var (tickets, total) = await _service.GetTicketsByDate(date);
-            return Ok(new { Tickets = tickets, Total = total });
+            try
+            {
+                var (tickets, total) = await _service.GetTicketsByDate(date);
+                return Ok(new { Tickets = tickets, Total = total });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
-    }
+    } 
 }

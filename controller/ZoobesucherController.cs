@@ -17,14 +17,14 @@ namespace ZooAPI.Controller
         }
 
         // Alle Tiere
-        [HttpGet("tiere")]
+        [HttpGet("tiere")] // api/zoobesucher/tiere
         public async Task<ActionResult<List<Tier>>> GetAllTiere()
         {
             return await _service.GetAllTiere();
         }
 
         // Tier nach Gattung
-        [HttpGet("tiere/{gattung}")]
+        [HttpGet("tiere/{gattung}")] // api/zoobesucher/tiere/{gattung}
         public async Task<ActionResult<Tier>> GetTierByGattung(string gattung)
         {
             var tier = await _service.GetTierByGattung(gattung);

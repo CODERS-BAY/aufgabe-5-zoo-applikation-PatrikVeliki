@@ -72,29 +72,31 @@ CREATE TABLE tiere
 );
 
 -- Ticket Table
+drop table if exists tickets;
 CREATE TABLE tickets
 (
     id        INT PRIMARY KEY AUTO_INCREMENT,
+    type VARCHAR(255) NOT NULL,
     preis     DOUBLE    NOT NULL,
-    zeitpunkt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    verkaufsdatum TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP # format: YYYY-MM-DD HH:MM:SS
 );
 
-ALTER TABLE Zoo.tickets
-    ADD type VARCHAR(255);
 
 ALTER TABLE tickets MODIFY type ENUM('Kinder', 'Erwachsener', 'Senioren');
 UPDATE Zoo.tickets
 SET type = 'Kinder'
-WHERE preis = 20;
+WHERE preis = 5;
 UPDATE Zoo.tickets
 SET type = 'Erwachsener'
-WHERE preis = 25;
+WHERE preis = 10;
 UPDATE Zoo.tickets
 SET type = 'Senioren'
-WHERE preis = 22;
+WHERE preis = 7;
 
 ALTER TABLE Zoo.tickets
-    ADD CONSTRAINT CHK_TicketType CHECK (type IN ('Kinder', 'Erwachsener', 'Senioren'));
+ADD COLUMN verkaufsdatum TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+
 
 CREATE INDEX idx_verkaufsdatum ON Zoo.tickets (verkaufsdatum);
 

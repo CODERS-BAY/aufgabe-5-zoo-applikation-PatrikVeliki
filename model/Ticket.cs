@@ -6,7 +6,7 @@
         public int Id { get; set; } // Ticket-ID
         public TicketType Type { get; set; } // Tickettyp (Kinder, Erwachsener, Senioren)
         public decimal Preis { get; set; } // Ticketpreis
-        public DateTime Verkaufsdatum { get; set; } // Verkaufsdatum des Tickets
+        public DateTime Verkaufsdatum { get; set; } // Verkaufsdatum
     }
 
     // Ticketpreise für verschiedene Typen
@@ -20,8 +20,8 @@
     // Tickettypen
     public enum TicketType
     {
-        Kinder, // Kinder-Ticket
-        Erwachsener, // Erwachsenen-Ticket
-        Senioren // Senioren-Ticket
+        Kinder, // Kinder-Ticket = 1
+        Erwachsener, // Erwachsenen-Ticket = 2
+        Senioren // Senioren-Ticket = 3
     }
 }

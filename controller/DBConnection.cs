@@ -1,37 +1,43 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Data;
 using MySqlConnector;
-using System.IO;
-using System.Threading.Tasks;
-using ZooAPI.Model;
 
 namespace ZooAPI.Controller
 {
     // Datenbankverbindungsklasse
     public class DBConnection
     {
-        private readonly IConfiguration _configuration; // Konfigurationsobjekt
-        private readonly string? _connectionString; // Verbindungszeichenfolge zur Datenbank
+        private readonly string _connectionString; // Verbindungszeichenfolge zur Datenbank
 
         // Konstruktor mit Konfiguration
         public DBConnection(IConfiguration configuration)
         {
-            _configuration = configuration;
             _connectionString =
-                _configuration.GetConnectionString("ZooDb"); // Verbindungszeichenfolge aus Konfiguration holen
+                configuration.GetConnectionString("ZooDb"); // Verbindungszeichenfolge aus Konfiguration holen
         }
 
         // Überladener Konstruktor mit Verbindungszeichenfolge und Konfiguration
-        public DBConnection(string? connectionString, IConfiguration configuration)
+        public DBConnection(string connectionString, IConfiguration configuration)
         {
             _connectionString = connectionString;
-            _configuration = configuration;
         }
 
-        // Asynchrone Methode zur Herstellung einer Datenbankverbindung
+        // Asynchrone Methode zur Herstellung einer sicheren Datenbankverbindung
         public async Task<MySqlConnection> GetConnectionAsync()
         {
+            if (string.IsNullOrWhiteSpace(_connectionString))
+            {
+                throw new Exception($"Verbindungszeichenfolge ist nicht definiert" + $".");
+            }
+
             var conn = new MySqlConnection(_connectionString); // Neue Verbindung erstellen
+
             await conn.OpenAsync(); // Verbindung asynchron öffnen
+
+            if (conn.State != ConnectionState.Open)
+            {
+                throw new Exception("Verbindung konnte nicht geöffnet werden.");
+            }
+
             return conn; // Verbindung zurückgeben
         }
     }
